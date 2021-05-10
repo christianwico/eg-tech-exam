@@ -8,181 +8,215 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final FocusNode _usernameNode = FocusNode();
+  final FocusNode _passwordNode = FocusNode();
+  final FocusNode _startupNode = FocusNode();
+
+  final List<String> _startupList = [
+    'Tech Quickie',
+    'Short Circuit',
+    'Tech Linked',
+    'Carpool Critics',
+    'Mac Address',
+  ];
+
+  String _username = '';
+  String _password = '';
+  String _startup = '';
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/background-login.png'),
-          fit: BoxFit.cover,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/background-login.png'),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 60.0,
-        vertical: 24.0,
-      ),
-      width: double.maxFinite,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          _buildBrand(context),
-          _buildForm(context),
-          _buildCopyFooter(),
-        ],
+        padding: EdgeInsets.symmetric(
+          horizontal: 60.0,
+          vertical: 24.0,
+        ),
+        width: double.maxFinite,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildBrand(context),
+              _buildForm(context),
+              _buildCopyFooter(),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildBrand(BuildContext context) {
-    return Expanded(
-      flex: 2,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.location_on,
-            size: 36.0,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.location_on,
+          size: 36.0,
+        ),
+        Text(
+          'StartUP',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headline6?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(
+            vertical: 12.0,
           ),
-          Text(
-            'StartUP',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline6?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 12.0,
-            ),
-            height: 12.0,
-            width: 24.0,
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Colors.white,
-                  width: 0.5,
-                ),
+          height: 12.0,
+          width: 24.0,
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Colors.white,
+                width: 0.5,
               ),
             ),
           ),
-          Text(
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-            style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  fontSize: 10.0,
-                  fontWeight: FontWeight.w100,
-                ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+        ),
+        Text(
+          'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+          style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                fontSize: 10.0,
+                fontWeight: FontWeight.w100,
+              ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 
   Widget _buildForm(BuildContext context) {
-    return Expanded(
-      flex: 2,
-      child: Form(
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.person_outline,
-                  color: Colors.white,
-                  size: 16.0,
-                ),
-                hintText: 'USERNAME',
-              ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.lock_outline,
-                  color: Colors.white,
-                  size: 16.0,
-                ),
-                hintText: 'PASSWORD',
-              ),
-              obscureText: true,
-              obscuringCharacter: '*',
-            ),
-            DropdownButtonFormField<String>(
-              items: [
-                DropdownMenuItem(
-                  child: Text('SELECT STARTUP'),
-                ),
-              ],
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.calendar_today_outlined,
-                  color: Colors.white,
-                  size: 16.0,
-                ),
-                hintText: 'SELECT STARTUP',
-              ),
-              icon: Icon(
-                Icons.keyboard_arrow_down,
+    return Form(
+      child: Column(
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.person_outline,
                 color: Colors.white,
+                size: 16.0,
               ),
+              hintText: 'USERNAME',
             ),
-            SizedBox(height: 24.0),
-            SizedBox(
-              width: double.maxFinite,
-              child: ElevatedButton(
+            onSaved: (String? username) =>
+                setState(() => _username = username ?? ''),
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.lock_outline,
+                color: Colors.white,
+                size: 16.0,
+              ),
+              hintText: 'PASSWORD',
+            ),
+            obscureText: true,
+            obscuringCharacter: '*',
+            onSaved: (String? password) =>
+                setState(() => _password = password ?? ''),
+          ),
+          DropdownButtonFormField<String>(
+            items: _startupList.map((String startup) {
+              return DropdownMenuItem<String>(
+                value: startup,
                 child: Text(
-                  'LOGIN',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2.0,
-                  ),
+                  startup,
+                  style: TextStyle(color: Colors.black),
                 ),
-                style: ButtonStyle(
-                  foregroundColor:
-                      MaterialStateProperty.all(Theme.of(context).accentColor),
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                    ),
-                  ),
-                  elevation: MaterialStateProperty.all(0.0),
-                ),
-                onPressed: () {},
+              );
+            }).toList(),
+            selectedItemBuilder: (BuildContext context) {
+              return _startupList.map((String startup) {
+                return Text(
+                  startup,
+                  style: Theme.of(context).textTheme.bodyText1,
+                );
+              }).toList();
+            },
+            onChanged: (String? startup) =>
+                setState(() => _startup = startup ?? ''),
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.calendar_today_outlined,
+                color: Colors.white,
+                size: 16.0,
               ),
+              hintText: 'SELECT STARTUP',
             ),
-            TextButton(
+            style: TextStyle(color: Colors.white),
+            icon: Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: 24.0),
+          SizedBox(
+            width: double.maxFinite,
+            child: ElevatedButton(
               child: Text(
-                'I forgot my password!',
-                style: TextStyle(color: Color(0xFF70003B), fontSize: 10.0),
-              ),
-              onPressed: () {},
-            ),
-            TextButton(
-              child: Text.rich(
-                TextSpan(
-                  text: 'NOT A MEMBER? ',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10.0,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.5,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: 'REGISTER',
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ],
+                'LOGIN',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2.0,
                 ),
               ),
+              style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.all(Theme.of(context).accentColor),
+                backgroundColor: MaterialStateProperty.all(Colors.white),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
+                ),
+                elevation: MaterialStateProperty.all(0.0),
+              ),
               onPressed: () {},
             ),
-          ],
-        ),
+          ),
+          TextButton(
+            child: Text(
+              'I forgot my password!',
+              style: TextStyle(color: Color(0xFF70003B), fontSize: 10.0),
+            ),
+            onPressed: () {},
+          ),
+          TextButton(
+            child: Text.rich(
+              TextSpan(
+                text: 'NOT A MEMBER? ',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5,
+                ),
+                children: [
+                  TextSpan(
+                    text: 'REGISTER',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
