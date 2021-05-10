@@ -3,9 +3,34 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData appTheme = ThemeData(
   primarySwatch: _createMaterialColor(Color(0xFFE2288B)),
-  textTheme: GoogleFonts.montserratTextTheme(),
+  textTheme: GoogleFonts.montserratTextTheme().apply(
+    bodyColor: Colors.white,
+  ),
   primaryTextTheme: GoogleFonts.montserratTextTheme(),
   accentTextTheme: GoogleFonts.montserratTextTheme(),
+  iconTheme: IconThemeData(
+    color: Colors.white,
+  ),
+  primaryIconTheme: IconThemeData(
+    color: Colors.white,
+  ),
+  accentIconTheme: IconThemeData(
+    color: Colors.white,
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    enabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.white),
+    ),
+    hintStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 12.0,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 2.0,
+    ),
+    prefixStyle: TextStyle(
+      color: Colors.white,
+    ),
+  ),
 );
 
 MaterialColor _createMaterialColor(Color color) {
