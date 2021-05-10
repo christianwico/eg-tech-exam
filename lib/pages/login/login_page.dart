@@ -1,4 +1,7 @@
+import 'package:exam/providers/auth/auth.dart';
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -207,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 elevation: MaterialStateProperty.all(0.0),
               ),
-              onPressed: () {},
+              onPressed: context.read<Auth>().loginViaGoogleAction,
             ),
           ),
           TextButton(
