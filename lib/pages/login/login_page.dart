@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +28,6 @@ class LoginPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           _buildBrand(context),
-          SizedBox(height: 16.0),
           _buildForm(context),
           _buildCopyFooter(),
         ],
@@ -31,8 +37,9 @@ class LoginPage extends StatelessWidget {
 
   Widget _buildBrand(BuildContext context) {
     return Expanded(
+      flex: 2,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             Icons.location_on,
@@ -75,6 +82,7 @@ class LoginPage extends StatelessWidget {
 
   Widget _buildForm(BuildContext context) {
     return Expanded(
+      flex: 2,
       child: Form(
         child: Column(
           children: [
@@ -159,6 +167,7 @@ class LoginPage extends StatelessWidget {
                     color: Colors.white,
                     fontSize: 10.0,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
                   ),
                   children: [
                     TextSpan(
@@ -179,11 +188,17 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _buildCopyFooter() {
-    return Text(
-      'Copyright © 2016 All right reserved. StartUP Project Manager',
-      style: TextStyle(
-        fontSize: 8.0,
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          'Copyright © 2016 All right reserved. StartUP Project Manager',
+          style: TextStyle(
+            fontSize: 10.0,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }
