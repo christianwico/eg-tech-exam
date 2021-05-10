@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => Auth(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,10 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: appTheme,
-      home: Provider<Auth>(
-        create: (_) => Auth(),
-        child: LandingPage(),
-      ),
+      home: context.watch<Auth>().isLoggedIn ? LandingPage() : LoginPage(),
     );
   }
 }
