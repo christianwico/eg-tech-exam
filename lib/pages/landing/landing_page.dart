@@ -1,6 +1,7 @@
 import 'package:exam/models/profile.dart';
 import 'package:exam/providers/auth/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,8 @@ class LandingPage extends StatelessWidget {
         child: SingleChildScrollView(
           padding: EdgeInsets.only(top: 24.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               Stack(
                 alignment: Alignment.center,
@@ -59,7 +62,11 @@ class LandingPage extends StatelessWidget {
                     _buildListTile(profile?.nickname ?? 'Unknown', 'Nickname'),
                     _buildListTile(profile?.name ?? 'Unknown', 'Name'),
                     _buildListTile(
-                        profile?.updatedAt ?? 'Unknown', 'Updated At'),
+                        profile != null
+                            ? DateFormat('MMMM dd, y, hh:mm:ss a')
+                                .format(DateTime.parse(profile.updatedAt))
+                            : 'Unknown',
+                        'Updated At'),
                   ],
                 ),
               ),
