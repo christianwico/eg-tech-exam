@@ -1,3 +1,4 @@
+import 'package:exam/pages/landing/landing_page.dart';
 import 'package:exam/pages/login/login_page.dart';
 import 'package:exam/providers/auth/auth.dart';
 import 'package:exam/theme/theme.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: appTheme,
       home: Provider<Auth>(
         create: (_) => Auth(),
-        child: LoginPage(),
+        child: LandingPage(),
       ),
     );
   }
