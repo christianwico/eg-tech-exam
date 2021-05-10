@@ -1,8 +1,14 @@
+import 'package:exam/models/profile.dart';
+import 'package:exam/providers/auth/auth.dart';
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final Profile? profile = context.read<Auth>().profile;
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -28,15 +34,21 @@ class LandingPage extends StatelessWidget {
                     backgroundColor: Colors.white,
                     radius: 48.0,
                   ),
-                  CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 48.0,
-                    ),
-                    radius: 44.0,
-                  ),
+                  profile != null
+                      ? CircleAvatar(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          foregroundImage: NetworkImage(profile.picture),
+                          radius: 44.0,
+                        )
+                      : CircleAvatar(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: Icon(
+                            Icons.person,
+                            size: 48.0,
+                            color: Colors.white,
+                          ),
+                          radius: 44.0,
+                        ),
                 ],
               ),
               Card(
@@ -44,17 +56,35 @@ class LandingPage extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: [
-                    _buildListTile('Testing for layout', 'Name'),
-                    _buildListTile('Testing for layout', 'Name'),
-                    _buildListTile('Testing for layout', 'Name'),
-                    _buildListTile('Testing for layout', 'Name'),
-                    _buildListTile('Testing for layout', 'Name'),
-                    _buildListTile('Testing for layout', 'Name'),
-                    _buildListTile('Testing for layout', 'Name'),
-                    _buildListTile('Testing for layout', 'Name'),
-                    _buildListTile('Testing for layout', 'Name'),
-                    _buildListTile('Testing for layout', 'Name'),
+                    _buildListTile(profile?.nickname ?? 'Unknown', 'Nickname'),
+                    _buildListTile(profile?.name ?? 'Unknown', 'Name'),
+                    _buildListTile(
+                        profile?.updatedAt ?? 'Unknown', 'Updated At'),
                   ],
+                ),
+              ),
+              SizedBox(
+                width: double.maxFinite,
+                child: ElevatedButton(
+                  child: Text(
+                    'LOGOUT',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2.0,
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all(
+                        Theme.of(context).accentColor),
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                    ),
+                    elevation: MaterialStateProperty.all(0.0),
+                  ),
+                  onPressed: context.read<Auth>().logoutAction,
                 ),
               ),
             ],
