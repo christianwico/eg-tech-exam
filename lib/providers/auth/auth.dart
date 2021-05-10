@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -14,7 +16,14 @@ class Auth extends ChangeNotifier {
   String? name;
   String? picture;
 
-  // Map<String, dynamic> _parseIdToken(String idToken) {}
+  Map<String, dynamic> _parseIdToken(String idToken) {
+    final List<String> parts = idToken.split(r'.');
+
+    assert(parts.length == 3);
+
+    return jsonDecode(
+        utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
+  }
 
   // Future<Map> _getUserDetails(String accessToken) async {}
 
