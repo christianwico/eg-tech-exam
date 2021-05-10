@@ -27,7 +27,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
@@ -41,60 +40,60 @@ class _LoginPageState extends State<LoginPage> {
           vertical: 24.0,
         ),
         width: double.maxFinite,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildBrand(context),
-              _buildForm(context),
-              _buildCopyFooter(),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildBrand(context),
+            _buildForm(context),
+            _buildCopyFooter(),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildBrand(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.location_on,
-          size: 36.0,
-        ),
-        Text(
-          'StartUP',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline6?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(
-            vertical: 12.0,
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.location_on,
+            size: 36.0,
           ),
-          height: 12.0,
-          width: 24.0,
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Colors.white,
-                width: 0.5,
+          Text(
+            'StartUP',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline6?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(
+              vertical: 12.0,
+            ),
+            height: 12.0,
+            width: 24.0,
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
               ),
             ),
           ),
-        ),
-        Text(
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                fontSize: 10.0,
-                fontWeight: FontWeight.w100,
-              ),
-          textAlign: TextAlign.center,
-        ),
-      ],
+          Text(
+            'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.w100,
+                ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 
@@ -168,6 +167,30 @@ class _LoginPageState extends State<LoginPage> {
             child: ElevatedButton(
               child: Text(
                 'LOGIN',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2.0,
+                ),
+              ),
+              style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.all(Theme.of(context).accentColor),
+                backgroundColor: MaterialStateProperty.all(Colors.white),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
+                ),
+                elevation: MaterialStateProperty.all(0.0),
+              ),
+              onPressed: () {},
+            ),
+          ),
+          SizedBox(
+            width: double.maxFinite,
+            child: ElevatedButton(
+              child: Text(
+                'LOGIN VIA GOOGLE',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,

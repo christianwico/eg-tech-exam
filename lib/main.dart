@@ -1,6 +1,8 @@
 import 'package:exam/pages/login/login_page.dart';
+import 'package:exam/providers/auth/auth.dart';
 import 'package:exam/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +15,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: appTheme,
-      home: LoginPage(),
+      home: Provider<Auth>(
+        create: (_) => Auth(),
+        child: LoginPage(),
+      ),
     );
   }
 }
