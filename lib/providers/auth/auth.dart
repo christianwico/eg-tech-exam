@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:exam/models/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,28 +11,22 @@ import 'package:http/http.dart' as http;
 import 'package:exam/constants.dart';
 
 class Auth extends ChangeNotifier {
-  final FlutterAppAuth _appAuth = FlutterAppAuth();
-  final FlutterSecureStorage _storage = FlutterSecureStorage();
-
   bool isBusy = false;
   bool isLoggedIn = false;
   String? errorMessage;
-  String? name;
-  String? picture;
+  Profile? profile;
 
-  Map<String, dynamic> _parseIdToken(String idToken) {
-    final List<String> parts = idToken.split(r'.');
+  // Map<String, dynamic> _parseIdToken(String idToken) {
+  //   final List<String> parts = idToken.split(r'.');
 
-    assert(parts.length == 3);
+  //   assert(parts.length == 3);
 
-    return jsonDecode(
-        utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
-  }
+  //   return jsonDecode(
+  //       utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
+  // }
 
   Future<void> _updateProfile(TokenResponse result) async {
-    final Map<String, dynamic> idToken = _parseIdToken(result.idToken!);
-    final Map<String, dynamic> profile =
-        await _getUserDetails(result.accessToken!);
+    profile = await _getUserDetails(result.accessToken!);
 
     await FlutterSecureStorage().write(
       key: SECURE_REFRESH_TOKEN,
@@ -39,13 +35,12 @@ class Auth extends ChangeNotifier {
 
     isBusy = true;
     isLoggedIn = true;
-    name = idToken['name'];
 
     notifyListeners();
   }
 
   // Get user details manually from Auth0.
-  Future<Map<String, dynamic>> _getUserDetails(String accessToken) async {
+  Future<Profile> _getUserDetails(String accessToken) async {
     final Uri uri = Uri.parse('https://$AUTH0_DOMAIN/userinfo');
     final response = await http.get(
       uri,
@@ -53,7 +48,7 @@ class Auth extends ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      return Profile.fromMap(jsonDecode(response.body));
     } else {
       throw Exception('Failed to get user details');
     }
@@ -112,6 +107,15 @@ class Auth extends ChangeNotifier {
       );
 
       await _updateProfile(result!);
+    } on PlatformException catch (e) {
+      print(e.message);
+      // Failed to authorize: [error: null, description: User cancelled flow]
+
+      isBusy = false;
+      isLoggedIn = false;
+      errorMessage = e.toString();
+
+      notifyListeners();
     } catch (e, s) {
       print('[LOGIN ERROR]: $e - $s');
 
