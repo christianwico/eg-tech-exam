@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import 'package:exam/models/profile.dart';
 import 'package:exam/providers/auth/auth.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import 'package:provider/provider.dart';
 
 class LandingPage extends StatelessWidget {
   @override
