@@ -19,11 +19,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<Auth>().init();
     context.watch<Auth>().addListener(() {
-      if (!context.read<Auth>().isBusy) {
+      final Auth provider = context.read<Auth>();
+
+      if (!provider.isBusy) {
         EasyLoading.dismiss();
 
-        if (context.read<Auth>().isLoggedIn) {
+        if (provider.isLoggedIn) {
           EasyLoading.showSuccess('Logged-in successfully!');
+        } else if (provider.errorMessage != null) {
+          EasyLoading.showError(provider.errorMessage!);
         } else {
           EasyLoading.showInfo('Logged-out');
         }

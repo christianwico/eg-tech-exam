@@ -16,15 +16,6 @@ class Auth extends ChangeNotifier {
   String? errorMessage;
   Profile? profile;
 
-  // Map<String, dynamic> _parseIdToken(String idToken) {
-  //   final List<String> parts = idToken.split(r'.');
-
-  //   assert(parts.length == 3);
-
-  //   return jsonDecode(
-  //       utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
-  // }
-
   Future<void> _updateProfile(TokenResponse result) async {
     profile = await _getUserDetails(result.accessToken!);
 
@@ -84,6 +75,8 @@ class Auth extends ChangeNotifier {
     } catch (e, s) {
       print('[LOGIN ERROR]: $e - $s');
 
+      errorMessage = 'Login cancelled';
+
       // Logout if things go wrong regardless of previous state.
       logoutAction();
     }
@@ -115,7 +108,7 @@ class Auth extends ChangeNotifier {
 
       isBusy = false;
       isLoggedIn = false;
-      errorMessage = e.toString();
+      errorMessage = 'Login cancelled';
 
       notifyListeners();
     } catch (e, s) {
@@ -123,7 +116,7 @@ class Auth extends ChangeNotifier {
 
       isBusy = false;
       isLoggedIn = false;
-      errorMessage = e.toString();
+      errorMessage = 'Login cancelled';
 
       notifyListeners();
     }
