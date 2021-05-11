@@ -43,21 +43,24 @@ class _LoginPageState extends State<LoginPage> {
           vertical: 24.0,
         ),
         width: double.maxFinite,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildBrand(context),
-            _buildForm(context),
-            _buildCopyFooter(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildBrand(context),
+              _buildForm(context),
+              _buildCopyFooter(),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildBrand(BuildContext context) {
-    return Expanded(
+    return Container(
+      height: MediaQuery.of(context).size.height / 3,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -105,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         children: [
           TextFormField(
+            focusNode: _usernameNode,
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.person_outline,
@@ -117,6 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                 setState(() => _username = username ?? ''),
           ),
           TextFormField(
+            focusNode: _passwordNode,
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.lock_outline,
@@ -131,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                 setState(() => _password = password ?? ''),
           ),
           DropdownButtonFormField<String>(
+            focusNode: _startupNode,
             items: _startupList.map((String startup) {
               return DropdownMenuItem<String>(
                 value: startup,
@@ -193,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
             width: double.maxFinite,
             child: ElevatedButton(
               child: Text(
-                'LOGIN VIA GOOGLE',
+                'OTHER LOGIN OPTIONS',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,
@@ -249,7 +255,6 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildCopyFooter() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Text(
           'Copyright © 2016 All right reserved. StartUP Project Manager',
