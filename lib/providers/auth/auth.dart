@@ -30,10 +30,10 @@ class Auth extends ChangeNotifier {
 
     await FlutterSecureStorage().write(
       key: SECURE_REFRESH_TOKEN,
-      value: result.refreshToken!,
+      value: result.refreshToken,
     );
 
-    isBusy = true;
+    isBusy = false;
     isLoggedIn = true;
 
     notifyListeners();
@@ -92,6 +92,8 @@ class Auth extends ChangeNotifier {
   Future<void> loginViaGoogleAction() async {
     isBusy = true;
     errorMessage = null;
+
+    notifyListeners();
 
     try {
       final FlutterAppAuth appAuth = FlutterAppAuth();
